@@ -4,6 +4,7 @@ import {changePassword, newPassword} from './api/passwordChange.js'
 import { userLogin } from "./api/auth.js";
 import {verifyToken} from './api/middlewares.js'
 import "dotenv/config";
+import cors from 'cors'
 
 const app = express();
 // eslint-disable-next-line no-undef
@@ -11,7 +12,7 @@ const port = process.env.PORT || 3001;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cors())
 app.listen(port, () => {
   console.log(`Working on port ${port}`);
 });

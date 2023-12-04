@@ -4,7 +4,7 @@ import { generateToken  } from "./utils.js";
 import "dotenv/config";
 
 export const userLogin = async (req, res) => {
-  if (!req.body.email || !req.body.senha) {
+  if (!req.body.email || !req.body.password) {
     return res.status(400).json({ error: "Email e/ou senha inválidos." });
   }
 
@@ -13,7 +13,7 @@ export const userLogin = async (req, res) => {
     return res.status(401).json({ error: "Email e/ou senha incorretos." });
   }
 
-  const senhaCorreta = await bcrypt.compare(req.body.senha, user.password);
+  const senhaCorreta = await bcrypt.compare(req.body.password, user.password);
   if (!senhaCorreta)
     return res.status(401).json({ error: "Email e/ou senha incorretos." });
 

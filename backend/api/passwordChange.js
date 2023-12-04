@@ -2,7 +2,7 @@ import nodemailer from  'nodemailer'
 import jwt from 'jsonwebtoken'
 import {generateToken} from "./utils.js";
 import "dotenv/config";
-
+import { User } from "../config/mongodb.js";
 
 const changePassword = async (req, res) => {
     const { email } = req.body;

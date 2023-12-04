@@ -7,19 +7,19 @@ const createUser = async (req, res) => {
   const user = { ...req.body };
 
   try {
-    existsOrError(user.nome, "Nome inválido.");
+    existsOrError(user.name, "Nome inválido.");
     existsOrError(user.email, "E-mail inválido.");
-    existsOrError(user.senha, "Senha inválida.");
+    existsOrError(user.password, "Senha inválida.");
 
     const userAlreadyExists = await User.findOne({ email: user.email });
     if (userAlreadyExists) {
       return res.json({ message: "Email já foi utilizado." });
     }
 
-    const hashedPassword = await bcrypt.hash(user.senha, 10);
+    const hashedPassword = await bcrypt.hash(user.password, 10);
 
     const newUser = new User({
-      name: user.nome,
+      name: user.name,
       password: hashedPassword,
       email: user.email,
     });
