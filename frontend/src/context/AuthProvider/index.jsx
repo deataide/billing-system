@@ -1,10 +1,12 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext } from "react";
 import {
   getUserLocalStorage,
   setUserLocalStorage,
   LoginRequest,
   RegisterRequest,
-} from './util';
+  ChangePasswordRequest,
+  PasswordReset,
+} from "./util";
 
 export const AuthContext = createContext();
 
@@ -30,6 +32,13 @@ export const AuthProvider = ({ children }) => {
     return response;
   }
 
+  async function changePassword(email) {
+    const response = await ChangePasswordRequest(email);
+
+    console.log("Enviado para o email");
+    return;
+  }
+
   function logout() {
     setUser(null);
     setUserLocalStorage(null);
@@ -44,8 +53,23 @@ export const AuthProvider = ({ children }) => {
     setUserLocalStorage(payload);
   }
 
+  async function newPassword(password, token) {
+    const response = await PasswordReset(password, token);
+
+    return;
+  }
+
   return (
-    <AuthContext.Provider value={{ user, authenticate, logout, signup }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        authenticate,
+        logout,
+        signup,
+        changePassword,
+        newPassword,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

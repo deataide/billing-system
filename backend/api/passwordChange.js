@@ -3,6 +3,9 @@ import jwt from 'jsonwebtoken'
 import {generateToken} from "./utils.js";
 import "dotenv/config";
 import { User } from "../config/mongodb.js";
+import base64url from 'base64url'
+import bcrypt from 'bcrypt'
+
 
 const changePassword = async (req, res) => {
     const { email } = req.body;
@@ -18,6 +21,8 @@ const changePassword = async (req, res) => {
   
       user.recuperationToken = token
       await user.save()
+
+    const encodedToken = base64url(token)
   
     const transporter = nodemailer.createTransport({
       service: 'outlook',
@@ -34,7 +39,7 @@ const changePassword = async (req, res) => {
       text: "",
       html: `
       <p>Você solicitou a recuperação de senha. Clique no link abaixo para redefinir sua senha.</p>
-      <a href="http://localhost:3000/redefinir-senha/${token}">Redefinir Senha</a>
+      <a href="http://localhost:5173/new-password/${encodedToken}">Redefinir Senha</a>
     `
     });
   
@@ -45,33 +50,46 @@ const changePassword = async (req, res) => {
     }
   };
   
-  const newPassword = async(req, res, next)=>{
+  const newPassword = async(req, res)=>{
       
     const token = req.params.token
     const newPassword = req.body.newPassword
 
+    if(!newPassword){
+      return res.status(400).json({ erro: 'Cadê a nova senha?' });
+    }
+
     try {
        
-    const convertedToken = token.toString()
+      const decodedToken = base64url.decode(token)
   
-    if (!convertedToken || typeof convertedToken !== 'string') {
+    if (!decodedToken || typeof decodedToken !== 'string') {
       return res.status(400).json({ erro: 'Token inválido ou ausente' });
     }
   
     const secret = process.env.AuthSecret
-    const user = await User.findOne({recuperationToken: convertedToken})
     
-    await jwt.verify(convertedToken, secret, (err) => {
-      if (err) {
-        return res
-          .status(401)
-          .json({ mensagem: "Sessão inválida.", erro: err.message });
-      }
-   });
-  
+    const user = await User.findOne({recuperationToken: decodedToken})
+
+
     if (!user){
-      return res.json(400).json({message: "Token inválido"})
+      return res.status(400).json({message: "Tendi é nada"})
     }
+
+    try {
+      
+      jwt.verify(decodedToken, secret, (err) => {
+       if (err) {
+         return res
+           .status(401)
+           .json({ mensagem: "Sessão inválida.", erro: err.message });
+       }
+    });
+    } catch (error) {
+      return res.status(400).json(console.log(error))
+    }
+
+  
     const hashedPassword = await bcrypt.hash(newPassword, 10);
   
      user.password = hashedPassword
@@ -83,7 +101,7 @@ const changePassword = async (req, res) => {
   return res.status(200).json({message: "Senha alterada com sucesso!"})
       
     } catch (error) {
-        res.status(400).json({message: message.error})
+        console.log(error)
     }
 
   }

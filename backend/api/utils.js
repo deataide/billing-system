@@ -3,14 +3,15 @@ import jwt from "jsonwebtoken";
 
 const generateToken =  (userData, recuperationTime) => {
   try {
+    const secret = process.env.authSecret;
     let expiresIn = 60 * 60;
 
     if(recuperationTime===true){
       expiresIn = 60*5
-    }
+  
 
+    }
     // eslint-disable-next-line no-undef
-    const secret = process.env.authSecret;
 
     if (!secret) {
       throw new Error("A variável de ambiente authSecret não está definida.");

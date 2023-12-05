@@ -5,7 +5,7 @@ export const api = axios.create({
   baseURL: 'http://localhost:3001/',
 });
 
-axios.interceptors.request.use(
+ axios.interceptors.request.use(
   function (config) {
     const user = getUserLocalStorage();
 
