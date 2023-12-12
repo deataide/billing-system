@@ -7,6 +7,7 @@ import Recover from './pages/Recover'
 import Dashboard from './pages/Dashboard';
 import { AuthProvider } from './context/AuthProvider';
 import { PrivateRoute } from './components/PrivateRoute';
+import CreateBills from './components/CreateBills';
 
 export default function App() {
 
@@ -22,6 +23,14 @@ export default function App() {
   element={
     <PrivateRoute>
       <Dashboard />
+    </PrivateRoute>
+  }
+/>
+          <Route
+  path="/newBill"
+  element={
+    <PrivateRoute>
+      <CreateBills />
     </PrivateRoute>
   }
 />

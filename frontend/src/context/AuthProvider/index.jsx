@@ -24,10 +24,12 @@ export const AuthProvider = ({ children }) => {
   async function authenticate(email, password) {
     const response = await LoginRequest(email, password);
 
-    const payload = { token: response.token, email };
-
+    const payload = { token: response.token, email, _id: response.id };
+    console.log(response)
     setUser(payload);
     setUserLocalStorage(payload);
+
+    console.log(payload)
 
     return response;
   }
@@ -46,7 +48,6 @@ export const AuthProvider = ({ children }) => {
 
   async function signup(email, password, name) {
     const response = await RegisterRequest(email, password, name);
-
     const payload = { token: response.token, email };
 
     setUser(payload);
@@ -56,7 +57,7 @@ export const AuthProvider = ({ children }) => {
   async function newPassword(password, token) {
     const response = await PasswordReset(password, token);
 
-    return;
+    return response
   }
 
   return (

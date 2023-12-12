@@ -4,12 +4,22 @@ import { getUserLocalStorage } from '../context/AuthProvider/util';
 export const api = axios.create({
   baseURL: 'http://localhost:3001/',
 });
+export const apiWithToken = axios.create({
+  baseURL: 'http://localhost:3001/',
+});
 
- axios.interceptors.request.use(
+
+ apiWithToken.interceptors.request.use(
   function (config) {
     const user = getUserLocalStorage();
 
-    config.headers.Authorization = user?.token;
+    if(user?.token){
+      config.headers.Authorization = `Bearer ${user?.token}`
+    }
+
+
+    return config
+
   },
   function (error) {
     return Promise.reject(error);

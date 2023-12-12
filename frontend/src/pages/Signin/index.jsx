@@ -29,49 +29,47 @@ export default function Login() {
   }
 
   return (
-    <div className="bg-purple-400 flex min-h-screen">
-      <div className="hidden lg:block relative w-0 flex-1 bg-purple-900">
-        <div className="h-full flex justify-center items-center">
-          <img src={Image} />
-        </div>
-      </div>
-      <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-        <div className="mx-auto w-full max-w-sm lg:w-96">
+
+
+    <div className="bg-neutral-100 flex min-h-screen">
+
+<div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-20">
+        <div className="mx-auto w-full max-w-sm lg:w-100">
           <div>
-            <h2 className="mt-6 text-center text-white text-3xl font-semibold">
-              Entrar
+            <h2 className="mt-6 text-left text-blue-700 text-2xl font-bold">
+              ACCOUNT LOGIN
             </h2>
-            <p className="mt-6 text-gray-600 text-sm max-w">
-              Novo por aqui?{" "}
-              <Link to="/signup" className="text-purple-900 font-semibold">
-                &nbsp;Registre-se
+            <p className="mt-6 text-gray-500 text-1xl max-w">
+              Don't have an account?{" "}
+              <Link to="/signup" className="text-blue-700 font-semibold">
+                &nbsp;Sign Up
               </Link>
             </p>
           </div>
           <div className="mt-2">
-            <form onSubmit={handleSubmit(onFinish)}>
+            <form onSubmit={handleSubmit(onFinish)} className="text-sm">
               <div className="mb-4">
                 <input
                   type="email"
-                  placeholder="Email"
+                  placeholder="Email Adress"
                   name="email"
                   {...register("email")}
                   className="apperance-none block w-full py-3 px-4 
                   leading-tight text-gray-700 bg-gray-50 focus:bg-white border
-                   border-gray-200 focus:border-gray-500 rounded focus: outline-none"
+                   border-gray-200 focus:border-blue-200 rounded focus: outline-none"
                 />
               </div>
               <div className="mb-4">
                 <input
-                  type="password"
+                  type="text"
                   placeholder="Password"
                   name="password"
                   {...register("password")}
                   className="apperance-none block w-full py-3 px-4 leading-tight
                    text-gray-700 bg-gray-50 focus:bg-white border border-gray-200
-                    focus:border-pink-700 rounded focus: outline-none"
+                    focus:border-blue-200 rounded focus: outline-none"
                 />
-                <Link to="/recover" className="text-purple-900 font-semibold">
+                <Link to="/recover" className="text-blue-700 font-semibold">
                   &nbsp;Forget password
                 </Link>
               </div>
@@ -79,15 +77,22 @@ export default function Login() {
                 <button
                   type="submit"
                   className="inline-block w-full py-4 px-8 leading-none
-                   text-white bg-pink-700 hover:bg-pink-900 font-semibold rounded shadow"
+                   text-white bg-blue-700 hover:bg-blue-800 font-semibold rounded shadow"
                 >
-                  Entrar
+                  Next
                 </button>
               </div>
             </form>
           </div>
         </div>
       </div>
+
+      <div className="hidden lg:block relative w-0 flex-1 bg-blue-700">
+        <div className="h-full flex justify-center items-center">
+          <img src={Image} />
+        </div>
+      </div>
+
     </div>
   );
 }

@@ -15,27 +15,25 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-
+  
+  
   async function onFinish(data) {
     if (!data.email | !data.emailConf | !data.password) {
       alert('Preencha todos os campos');
-      return;
     } else if (data.email !== data.emailConf) {
-      alert('Emails não conferem');
-      return;
+      alert('Emails não conferem');}
+      try {
+        auth.signup(data.email, data.password, data.name);
+        
+        alert('Usuário cadastrado com sucesso');
+        navigate('../', { replace: true });
+        console.log('Cadastrado');
+      } catch (error) {
+        console.log('error catch:' + error);
+      }
+    
     }
 
-    try {
-      await auth.signup(data.email, data.password, data.name);
-
-      alert('Usuário cadastrado com sucesso');
-      navigate('../', { replace: true });
-      console.log('Cadastrado');
-    } catch (error) {
-      console.log('error catch:' + error);
-    }
-  }
 
   return (
     <div className="bg-purple-400 flex min-h-screen">

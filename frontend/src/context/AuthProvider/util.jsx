@@ -4,8 +4,8 @@ import { api } from "../../config/api";
 export async function LoginRequest(email, password) {
   try {
     const request = await api.post("signin", { email, password });
-
     return request.data;
+
   } catch (error) {
     console.log(`Erro no LoginRequest${error}`);
     return null;
