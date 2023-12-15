@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-import { User } from "../config/mongodb.js";
-import { existsOrError, generateToken} from "./utils.js";
+import { User } from "../../config/mongodb.js";
+import { existsOrError, generateToken} from "../utils.js";
 import "dotenv/config";
 
 const createUser = async (req, res) => {
@@ -40,16 +40,18 @@ const getUser = async (req, res) => {
 
   try {
     const userInfo = await User.findOne({ _id: id }).select(
-      "_id name email createdAt"
-    );
+      "_id name email"
+      
+    ).populate('clients', 'name balance');
+    ;
 
     if (!userInfo) {
-      res.status(400).json({ message: "Usuário não encontrado." });
+      return res.status(400).json({ message: "Usuário não encontrado." });
     }
 
-    res.json(userInfo);
+    return res.json(userInfo);
   } catch (error) {
-    res.status(500).json({message: message.error });
+    console.log(error)
   }
 };
 
@@ -60,7 +62,7 @@ try {
   const users = await User.find().select("_id name email createdAt")
 
   if(!users){
-    res.status(400).json({message: message.error + "Erro Interno."})
+    res.status(400).json({message:  "Internal Error"})
   }
 
   return res.json({users})
@@ -71,8 +73,6 @@ try {
 
 
 }
-
-
 
 const deleteUser = async (req, res) => {
   const userId = req.params.id;
@@ -93,7 +93,5 @@ const deleteUser = async (req, res) => {
     res.status(500).json({ error });
   }
 };
-
-
 
 export { createUser, getUser, deleteUser, getUsers};

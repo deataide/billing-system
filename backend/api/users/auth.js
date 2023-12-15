@@ -1,6 +1,6 @@
-import { User } from "../config/mongodb.js";
+import { User } from "../../config/mongodb.js";
 import bcrypt from "bcrypt";
-import { generateToken  } from "./utils.js";
+import { generateToken  } from "../utils.js";
 import "dotenv/config";
 
 export const userLogin = async (req, res) => {
@@ -17,7 +17,7 @@ export const userLogin = async (req, res) => {
   if (!senhaCorreta)
     return res.status(401).json({ error: "Email e/ou senha incorretos." });
 
-  const token = await generateToken(user._id)
+  const token =  generateToken(user._id)
 
   const payload = {
     id: user._id,

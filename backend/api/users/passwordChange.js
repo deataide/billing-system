@@ -1,8 +1,8 @@
 import nodemailer from  'nodemailer' 
 import jwt from 'jsonwebtoken'
-import {generateToken} from "./utils.js";
+import {generateToken} from "../utils.js";
 import "dotenv/config";
-import { User } from "../config/mongodb.js";
+import { User } from "../../config/mongodb.js";
 import base64url from 'base64url'
 import bcrypt from 'bcrypt'
 
@@ -56,7 +56,7 @@ const changePassword = async (req, res) => {
     const newPassword = req.body.newPassword
 
     if(!newPassword){
-      return res.status(400).json({ erro: 'Cadê a nova senha?' });
+      return res.status(400).json({ error: 'Digite sua nova senha' });
     }
 
     try {
@@ -64,16 +64,15 @@ const changePassword = async (req, res) => {
       const decodedToken = base64url.decode(token)
   
     if (!decodedToken || typeof decodedToken !== 'string') {
-      return res.status(400).json({ erro: 'Token inválido ou ausente' });
+      return res.status(400).json({ error: 'Token inválido ou ausente' });
     }
   
     const secret = process.env.AuthSecret
     
     const user = await User.findOne({recuperationToken: decodedToken})
 
-
     if (!user){
-      return res.status(400).json({message: "Tendi é nada"})
+      return res.status(500).json({message: "Erro interno"})
     }
 
     try {
@@ -86,7 +85,7 @@ const changePassword = async (req, res) => {
        }
     });
     } catch (error) {
-      return res.status(400).json(console.log(error))
+      return res.status(400).json({message: error})
     }
 
   
@@ -101,7 +100,7 @@ const changePassword = async (req, res) => {
   return res.status(200).json({message: "Senha alterada com sucesso!"})
       
     } catch (error) {
-        console.log(error)
+      return res.status(500).json({message: error})
     }
 
   }

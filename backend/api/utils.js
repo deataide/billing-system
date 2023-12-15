@@ -9,7 +9,6 @@ const generateToken =  (userData, recuperationTime) => {
     if(recuperationTime===true){
       expiresIn = 60*5
   
-
     }
     // eslint-disable-next-line no-undef
 
