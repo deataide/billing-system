@@ -20,10 +20,10 @@ router.get("/users", verifyToken, getUsers)
 
 // CLIENT ROUTES
 router.get("/:userId/clients", getClients )
-router.post("/createClient", createClient);
+router.post("/create-client", createClient);
 router.delete("/deleteClient", deleteClient)
 
 // TRANSACTIONS ROUTES
-router.post("/newTransaction", newTransaction)
+router.post("/new-transaction", newTransaction)
 
 export default router

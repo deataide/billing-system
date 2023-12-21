@@ -23,7 +23,6 @@ const createClient = async (req, res) => {
       if (!user) {
          res.status(401).json({message: "User not found"})}
   
-
       const newClient = new Client(client)
       await newClient.save()
   
@@ -31,10 +30,9 @@ const createClient = async (req, res) => {
   
       await user.save()
   
-      return res.status(200).json({ newClient });
+      return res.status(200).json("Client registered");
     } catch (error) {
-        console.log(error)
-      return res.json(500).json({error: "Internal Server Error"})
+      return res.status(400).json({error: error.message + "Fill th"})
     }
   };
 
@@ -42,7 +40,7 @@ const createClient = async (req, res) => {
     const userId = req.params.userId;
   
     try {
-      const userWithClientsAndTransactions = await User.findById(userId).select("_id name email").populate({
+      const userWithClientsAndTransactions = await User.findById(userId).select("_id name email adress balance").populate({
         path: 'clients',
         populate: {
           path: 'transactions',
@@ -52,6 +50,8 @@ const createClient = async (req, res) => {
       if (!userWithClientsAndTransactions) {
         return res.status(404).json({ message: 'Usuário não encontrado.' });
       }
+
+      userWithClientsAndTransactions.clients.sort((a, b) => a.name.localeCompare(b.name));
   
       return res.json(userWithClientsAndTransactions);
     } catch (error) {
@@ -67,12 +67,18 @@ const deleteClient = async (req, res) => {
 
     if(!clientId) return "Missing the client ID"
 
-    const client = await Client.findOneAndDelete({_id: clientId})
+    const client = await Client.findOne({_id: clientId})
+
+    if(client.balance > 0){
+      return res.status(401).json({message: "The client has to been 0 of balance"})
+    }
+
+    client.deleteOne()
 
     await client.save()
 
     if (!client) {
-      return res.status(200).json({ message: "Bill não existente ou delatada com sucesso" });
+      return res.status(200).json({ message: "Cliente não existente ou deletado com sucesso" });
     }
 
   } catch (error) {

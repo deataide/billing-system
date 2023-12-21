@@ -59,25 +59,25 @@ const clientSchema = new mongoose.Schema({
   adress: {
     street: {
       type: String,
-      required: true
+
     },
     number: {
       type: Number,
-      required: true
+
     },
     city: {
       type: String,
-      required: true
+
     }
   },
   phone: {
     ddd: {
       type: Number,
-      required: true
+
     },
     number: {
       type: Number,
-      required: true
+
     }
   },
   balance: {
@@ -88,7 +88,6 @@ const clientSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  
 
 });
 

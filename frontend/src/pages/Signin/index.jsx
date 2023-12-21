@@ -1,9 +1,10 @@
 import React from "react";
-import { useState, useContext } from "react";
+import { toast, ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+
 import { useAuth } from "../../context/AuthProvider/useAuth";
-import Image from "../../assets/undraw.svg";
 
 export default function Login() {
   let navigate = useNavigate();
@@ -20,11 +21,31 @@ export default function Login() {
     try {
       await auth.authenticate(data.email, data.password);
 
-      alert("Login realizado");
+      toast.success('Logado!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
 
-      navigate("../dashboard", { replace: true });
+      navigate("../home", { replace: true });
     } catch (error) {
-      alert("Dados incorretos");
+
+      toast.error('E-mail or password incorret', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+
     }
   }
 
@@ -47,7 +68,7 @@ export default function Login() {
             </p>
           </div>
           <div className="mt-2">
-            <form onSubmit={handleSubmit(onFinish)} className="text-sm">
+            <form onSubmit={handleSubmit(onFinish)} className=" text-sm">
               <div className="mb-4">
                 <input
                   type="email"
@@ -69,7 +90,7 @@ export default function Login() {
                    text-gray-700 bg-gray-50 focus:bg-white border border-gray-200
                     focus:border-blue-200 rounded focus: outline-none"
                 />
-                <Link to="/recover" className="text-blue-700 font-semibold">
+                <Link to="/forget-password" className="text-blue-700 font-semibold">
                   &nbsp;Forget password
                 </Link>
               </div>
@@ -89,10 +110,20 @@ export default function Login() {
 
       <div className="hidden lg:block relative w-0 flex-1 bg-blue-700">
         <div className="h-full flex justify-center items-center">
-          <img src={Image} />
         </div>
       </div>
-
+      <ToastContainer
+position="top-right"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="colored"
+/>
     </div>
   );
 }

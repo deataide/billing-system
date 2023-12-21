@@ -6,4 +6,4 @@ export const admin = (req, res, next) => {
       // O usuário não é um administrador
       res.status(403).json({ message: 'Acesso proibido. O usuário não é um administrador.' });
     }
-  };
+  };    

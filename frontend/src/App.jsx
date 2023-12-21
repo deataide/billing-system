@@ -1,44 +1,82 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Signin from './pages/Signin';
-import Signup from './pages/Signup';
-import NewPassword from './pages/NewPassword';
-import Recover from './pages/Recover'
-import Dashboard from './pages/Dashboard';
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import { AuthProvider } from './context/AuthProvider';
-import { PrivateRoute } from './components/PrivateRoute';
-import CreateBills from './components/CreateBills';
+import Signin from './pages/Signin'
+import Signup from './pages/Signup'
+import Layout from './components/Layout';
+import Clients from './pages/Client'
+import NewClient from './pages/NewClient/index'
+import Recover from './pages/Recover'
+import Dashboard from './pages/Dashboard'
+import {PrivateRoute} from './components/PrivateRoute'
+import Transactions from './pages/Transactions';
+import NewPassword from './pages/NewPassword'
 
-export default function App() {
 
-  
+
+const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Routes>
-          <Route exact path="/" element={<Signin />} />
-          <Route exact path="/signup" element={<Signup />} />
-          <Route
+      <Routes>
+
+        <Route
+          path="/"
+          element={<Signin/>}
+        />
+        <Route
+          path="/signup"
+          element={<Signup
+          />}
+        />
+        <Route
+          path="/forget-password"
+          element={<Recover
+          />}
+        />
+        <Route
+          path="/new-password/:token"
+          element={<NewPassword
+          />}
+        />
+
+<Route
   path="/dashboard"
   element={
-    <PrivateRoute>
+    <Layout>
+        <PrivateRoute>
       <Dashboard />
     </PrivateRoute>
+      </Layout>
   }
 />
-          <Route
-  path="/newBill"
-  element={
-    <PrivateRoute>
-      <CreateBills />
-    </PrivateRoute>
-  }
-/>
-            <Route exact path="/recover" element={<Recover/>}/>
-            <Route exact path="/new-password/:token" element={<NewPassword/>}/>
+    
+        <Route
+          path="/home"
+          element={<Layout><Dashboard/></Layout>}
+        />
+        <Route
+          path="/clients"
+          element={<Layout><Clients/></Layout>}
+        />
+        <Route
+          path="/new-client"
+          element={<Layout><NewClient/></Layout>}
+        />
+        <Route
+          path="/transactions"
+          element={<Layout><Transactions/></Layout>}
+        />
+  
+        
 
-        </Routes>
+        {/* Adicione mais rotas conforme necessário */}
+      </Routes>
+
+
       </BrowserRouter>
     </AuthProvider>
   );
-}
+};
+
+export default App;

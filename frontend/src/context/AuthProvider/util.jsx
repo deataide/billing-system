@@ -1,5 +1,6 @@
 import React from "react";
 import { api } from "../../config/api";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export async function LoginRequest(email, password) {
   try {
@@ -23,6 +24,8 @@ export async function ChangePasswordRequest(email) {
 }
 
 export async function PasswordReset(password, token) {
+
+  const navigate = useNavigate()
   try {
     const request = await api.post(`redefinir-senha/${token}`, {
       newPassword: password,
@@ -30,6 +33,9 @@ export async function PasswordReset(password, token) {
     if (request) {
       console.log("Senha alterada com sucesso!");
     }
+
+    navigate("/", { replace: true });
+
   } catch (error) {
     console.log(error);
   }
