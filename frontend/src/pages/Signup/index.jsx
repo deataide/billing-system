@@ -75,7 +75,7 @@ export default function Login() {
               <div className="mb-4">
                 <input
                   type="email"
-                  placeholder="Repeat the adress e-mail"
+                  placeholder="Repeat the e-mail adress"
                   name="emailConf"
                   {...register("emailConf")}
                   className="apperance-none block w-full py-3 px-4 leading-tight text-gray-700 bg-gray-50 focus:bg-white border border-gray-200 focus:border-gray-500 rounded focus: outline-none"

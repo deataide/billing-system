@@ -25,20 +25,23 @@ export const AuthProvider = ({ children }) => {
     const response = await LoginRequest(email, password);
 
     const payload = { token: response.token, email, _id: response.id };
-    console.log(response)
+    console.log(response);
     setUser(payload);
     setUserLocalStorage(payload);
 
-    console.log(payload)
+    console.log(payload);
 
     return response;
   }
 
   async function changePassword(email) {
-    const response = await ChangePasswordRequest(email);
+    try {
+      const response = await ChangePasswordRequest(email);
 
-    console.log("Enviado para o email");
-    return;
+      return res.status(204);
+    } catch (error) {
+      return res.status(400).json({ error: error });
+    }
   }
 
   function logout() {
@@ -57,7 +60,7 @@ export const AuthProvider = ({ children }) => {
   async function newPassword(password, token) {
     const response = await PasswordReset(password, token);
 
-    return response
+    return response;
   }
 
   return (

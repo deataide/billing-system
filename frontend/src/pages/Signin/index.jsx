@@ -1,6 +1,6 @@
 import React from "react";
-import { toast, ToastContainer} from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
@@ -21,7 +21,7 @@ export default function Login() {
     try {
       await auth.authenticate(data.email, data.password);
 
-      toast.success('Logado!', {
+      toast.success("Logado!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -30,12 +30,11 @@ export default function Login() {
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });
+      });
 
-      navigate("../home", { replace: true });
+      navigate("../dashboard", { replace: true });
     } catch (error) {
-
-      toast.error('E-mail or password incorret', {
+      toast.error("E-mail or password incorret", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -44,17 +43,13 @@ export default function Login() {
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });
-
+      });
     }
   }
 
   return (
-
-
     <div className="bg-neutral-100 flex min-h-screen">
-
-<div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-20">
+      <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-20">
         <div className="mx-auto w-full max-w-sm lg:w-100">
           <div>
             <h2 className="mt-6 text-left text-blue-700 text-2xl font-bold">
@@ -90,7 +85,10 @@ export default function Login() {
                    text-gray-700 bg-gray-50 focus:bg-white border border-gray-200
                     focus:border-blue-200 rounded focus: outline-none"
                 />
-                <Link to="/forget-password" className="text-blue-700 font-semibold">
+                <Link
+                  to="/forget-password"
+                  className="text-blue-700 font-semibold"
+                >
                   &nbsp;Forget password
                 </Link>
               </div>
@@ -109,21 +107,20 @@ export default function Login() {
       </div>
 
       <div className="hidden lg:block relative w-0 flex-1 bg-blue-700">
-        <div className="h-full flex justify-center items-center">
-        </div>
+        <div className="h-full flex justify-center items-center"></div>
       </div>
       <ToastContainer
-position="top-right"
-autoClose={5000}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="colored"
-/>
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
   );
 }

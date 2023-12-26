@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useAuth } from "../../context/AuthProvider/useAuth";
+
 import {
   FaAddressBook,
   FaDoorClosed,
@@ -7,19 +9,21 @@ import {
   FaDev,
   FaAngleLeft,
 } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
   const [open, setOpen] = useState(true);
   let navigate = useNavigate();
+  const auth = useAuth();
 
   const Menus = [
-    { title: "Dashboard", icon: <FaSignal />, page: "home" },
+    { title: "Dashboard", icon: <FaSignal />, page: "dashboard" },
     { title: "Clients", icon: <FaAddressBook />, page: "clients" },
     { title: "Transaction", icon: <FaAsterisk />, page: "transactions" },
   ];
 
   function exit() {
+    auth.logout();
     navigate("../", { replace: true });
   }
 

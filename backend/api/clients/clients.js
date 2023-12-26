@@ -5,7 +5,7 @@ const createClient = async (req, res) => {
     const data = {...req.body};
   
     try {
-      existsOrError(data.id, "Need's a user Id");
+      existsOrError(data.id, "Need's a user id");
       existsOrError(data.name, "Need's a name");
       existsOrError(data.email, "Need's a e-mail");
       existsOrError(data.adress, "Need's a adress");
@@ -30,9 +30,9 @@ const createClient = async (req, res) => {
   
       await user.save()
   
-      return res.status(200).json("Client registered");
+      return res.status(201).json("Client registered");
     } catch (error) {
-      return res.status(400).json({error: error.message + "Fill th"})
+      return res.status(400).json({error: error.message})
     }
   };
 
@@ -48,47 +48,72 @@ const createClient = async (req, res) => {
       });
   
       if (!userWithClientsAndTransactions) {
-        return res.status(404).json({ message: 'Usuário não encontrado.' });
+        return res.status(404).json({ message: 'User not found' });
       }
 
       userWithClientsAndTransactions.clients.sort((a, b) => a.name.localeCompare(b.name));
   
       return res.json(userWithClientsAndTransactions);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return res.status(400).json({ message: error.message });
     }
   };
   
+  const editClient = async (req, res) => {
+    const clientId = req.params.clientId
+    const data = { ...req.body };
   
-const deleteClient = async (req, res) => {
+    try {
+      existsOrError(clientId, "Need's a client id");
 
-  const {clientId} = req.params
-  try {
+      const client = await Client.findById(clientId);
 
-    if(!clientId) return "Missing the client ID"
+      if (!client) {
+        return res.status(404).json({ message: "Client not found" });
+      }
+  
+      client.name = data.name || client.name;
+      client.email = data.email || client.email;
+      client.adress = data.adress || client.adress;
+      client.phone = data.phone || client.phone;
+  
+      await client.save();
+  
+      return res.status(204).end()
+    } catch (error) {
 
-    const client = await Client.findOne({_id: clientId})
-
-    if(client.balance > 0){
-      return res.status(401).json({message: "The client has to been 0 of balance"})
+   return res.status(400).json({error: error.message})
     }
+  };
+  
+  const deleteClient = async (req, res) => {
+    const { clientId } = req.params;
+  
+    try {
 
-    client.deleteOne()
+      if (!clientId) {
+        return res.status(400).json({ error: "Missing client id" });
+      }
 
-    await client.save()
 
-    if (!client) {
-      return res.status(200).json({ message: "Cliente não existente ou deletado com sucesso" });
+      const client = await Client.findOne({ _id: clientId });
+
+      if (!client) {
+        return res.status(404).json({ message: "Client doesn't exists" });
+      }
+
+      if (client.balance < 0) {
+        return res.status(401).json({ message: "The balance has to bee R$0 or Up than this" });
+      }
+
+      await client.deleteOne();
+  
+      return res.status(204).end();
+    } catch (error) {
+
+      res.status(400).json({ message: error.message });
     }
-
-  } catch (error) {
-    res.status(400).json({message: error.message})
-    
-  }}
-
+  };
   
 
-
-  
-  
-  export {createClient, getClients, deleteClient}
+  export {createClient, getClients, deleteClient, editClient}

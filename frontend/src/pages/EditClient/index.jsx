@@ -1,15 +1,17 @@
 import React from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { apiWithToken } from "../../config/api";
 import { getUserLocalStorage } from "../../context/AuthProvider/util";
 import { FaAngleLeft } from "react-icons/fa";
 
-export default function CreateClient() {
+export default function EditClient() {
   const user = getUserLocalStorage();
   const navigate = useNavigate();
+  const { clientId } = useParams();
+  console.log(clientId);
 
   const {
     register,
@@ -19,17 +21,23 @@ export default function CreateClient() {
 
   async function onFinish(data) {
     try {
-      const response = await apiWithToken.post("create-client", {
+      const userData = {
         id: user,
         name: data.name,
         email: data.email,
-        phone: { ddd: data.ddd, number: data.numberPhone },
+        phone: { ddd: data.ddd, number: data.phoneNumber }, // Corrigindo o nome da propriedade
         adress: {
           street: data.street,
           number: data.houseNumber,
           city: data.city,
         },
-      });
+      };
+      console.log(user._id);
+
+      const response = await apiWithToken.put(
+        `edit-client/${clientId}`,
+        userData
+      ); // Corrigindo o método para PUT
 
       if (!response) {
         toast.error("Internal server error", {
@@ -44,7 +52,7 @@ export default function CreateClient() {
         });
       }
 
-      toast.success("Client sucessfull registered", {
+      toast.success("Client successfully edited", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -54,11 +62,13 @@ export default function CreateClient() {
         progress: undefined,
         theme: "colored",
       });
+
       setTimeout(() => {
         navigate("../home", { replace: true });
       }, 500);
     } catch (error) {
-      toast.error(error + " Don't forget to fill in all the fields", {
+      console.log(error);
+      toast.error(error.message + " Don't forget to fill in all the fields", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -84,7 +94,7 @@ export default function CreateClient() {
         >
           <FaAngleLeft />
         </button>
-        <h1 className="text-center p-2 text-4xl font-bold">New Client</h1>
+        <h1 className="text-center p-2 text-4xl font-bold">Edit Client</h1>
       </div>
 
       <div className="mt-2">
@@ -209,7 +219,7 @@ export default function CreateClient() {
               type="submit"
               className="py-2 px-4 bg-blue-700 text-white rounded-md hover:bg-blue-800 focus:outline-none"
             >
-              Register
+              Finish
             </button>
           </div>
         </form>

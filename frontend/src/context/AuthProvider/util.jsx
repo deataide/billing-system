@@ -6,7 +6,6 @@ export async function LoginRequest(email, password) {
   try {
     const request = await api.post("signin", { email, password });
     return request.data;
-
   } catch (error) {
     console.log(`Erro no LoginRequest${error}`);
     return null;
@@ -24,8 +23,7 @@ export async function ChangePasswordRequest(email) {
 }
 
 export async function PasswordReset(password, token) {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   try {
     const request = await api.post(`redefinir-senha/${token}`, {
       newPassword: password,
@@ -35,7 +33,6 @@ export async function PasswordReset(password, token) {
     }
 
     navigate("/", { replace: true });
-
   } catch (error) {
     console.log(error);
   }

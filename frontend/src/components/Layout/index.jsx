@@ -1,18 +1,13 @@
-import React from 'react';
-import Sidebar from '../Sidebar/index.jsx'
-
-
+import React from "react";
+import Sidebar from "../Sidebar/index.jsx";
 
 const Layout = ({ children }) => {
   return (
-    <div className='flex flex-row'>
-      {/* Menu lateral */}
+    <div className="flex flex-row">
+
       <Sidebar />
 
-      {/* Conteúdo da página */}
-      <div className='flex flex-grow'>
-        {children}
-      </div>
+      <div className="flex flex-grow">{children}</div>
     </div>
   );
 };

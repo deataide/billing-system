@@ -11,11 +11,9 @@ const TransactionForm = ({ clientId, onSubmit }) => {
 
   const validateForm = async (data) => {
     try {
-      // Inicie o estado de carregamento
       setLoading(true);
       setError(null);
 
-      // Faça uma requisição ao backend para validar o formulário
       const response = await apiWithToken.post("/new-transaction", {
         amount: data.amount,
         description: data.description,
@@ -23,51 +21,61 @@ const TransactionForm = ({ clientId, onSubmit }) => {
         userId: user._id,
       });
 
-      // Verifique se a transação foi bem-sucedida
       if (response.status === 200) {
-        console.log("Transação bem-sucedida!");
-        // Chame a função de envio do formulário do componente pai
         onSubmit(clientId, data);
-        // Limpe o formulário após o envio
+
         reset();
       } else {
-        // Exiba uma mensagem de erro ao usuário
         setError("Erro na transação. Por favor, tente novamente.");
         console.error("Erro na transação:", response);
       }
     } catch (error) {
-      // Exiba uma mensagem de erro ao usuário
       setError("Erro na transação. Por favor, tente novamente.");
       console.error("Erro ao processar transação:", error);
     } finally {
-      // Atualize o estado de carregamento, independentemente do resultado
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(validateForm)}>
-      {/* Campos do formulário */}
-      <label>
-        Description:
-        <input type="text" {...register("description")} />
-      </label>
-      <label>
-        Amount:
-        <input type="number" {...register("amount")} />
-      </label>
+    <div className="flex flex-col">
+      <h1 className="text-center p-2 text-4xl font-bold mb-4">
+        New Transaction
+      </h1>
 
-      {/* Adicione feedback visual durante o envio */}
-      {loading && <p>Enviando transação...</p>}
+      <form onSubmit={handleSubmit(validateForm)} className="flex flex-col">
+        <input
+          type="text"
+          placeholder="Description"
+          {...register("description")}
+          className="apperance-none block w-full py-3 px-4 
+                  leading-tight text-gray-700 bg-gray-50 focus:bg-white border
+                   border-gray-200 focus:border-blue-200 rounded focus: outline-none mb-4"
+        />
 
-      {/* Exiba mensagens de erro */}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        <input
+          type="number"
+          placeholder="Amount"
+          {...register("amount")}
+          className="apperance-none block w-full py-3 px-4 
+                  leading-tight text-gray-700 bg-gray-50 focus:bg-white border
+                   border-gray-200 focus:border-blue-200 rounded focus: outline-none"
+        />
 
-      {/* ... outros campos do formulário */}
-      <button type="submit" disabled={loading}>
-        Enviar
-      </button>
-    </form>
+        {loading && <p>Enviando transação...</p>}
+
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="mt-6 inline-block w-full py-4 px-8 leading-none
+                   text-white bg-blue-700 hover:bg-blue-800 font-semibold rounded shadow"
+        >
+          Send
+        </button>
+      </form>
+    </div>
   );
 };
 

@@ -3,7 +3,7 @@ import {changePassword, newPassword} from '../api/users/passwordChange.js'
 //import {createBill, getBills, deleteBill, editBill} from '../api/bills/bills.js'
 import {admin, verifyToken} from '../config/middlewares.js'
 import { userLogin } from "../api/users/auth.js";
-import {createClient, deleteClient, getClients} from '../api/clients/clients.js'
+import {createClient, deleteClient, editClient, getClients} from '../api/clients/clients.js'
 import { newTransaction } from "../api/transactions/transaction.js";
 
 import express from 'express';
@@ -21,7 +21,9 @@ router.get("/users", verifyToken, getUsers)
 // CLIENT ROUTES
 router.get("/:userId/clients", getClients )
 router.post("/create-client", createClient);
-router.delete("/deleteClient", deleteClient)
+router.delete("/delete-client/:clientId", deleteClient)
+router.put("/edit-client/:clientId", editClient);
+
 
 // TRANSACTIONS ROUTES
 router.post("/new-transaction", newTransaction)

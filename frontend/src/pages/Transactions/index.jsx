@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { apiWithToken } from "../../config/api";
 import { getUserLocalStorage } from "../../context/AuthProvider/util";
-import { FaRegTrashAlt, FaPen, FaEye, FaFile } from "react-icons/fa";
-import Modal from 'react-modal';
+import { FaRegTrashAlt, FaPen, FaEye, FaFile, FaTimes } from "react-icons/fa";
+import { format } from "date-fns";
+import Modal from "react-modal";
 import TransactionForm from "../../components/TransactionForm";
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 export default function Clients() {
   const [clients, setClients] = useState([]);
@@ -34,9 +35,13 @@ export default function Clients() {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [user._id]);
+  useEffect(
+    () => {
+      fetchData();
+    },
+    [user._id],
+    [<TransactionForm />]
+  );
 
   const openModal = (client) => {
     setSelectedClient(client);
@@ -48,6 +53,11 @@ export default function Clients() {
     setIsModalOpen(false);
   };
 
+  const closeForm = () => {
+    setIsFormOpen(false);
+    setSelectedClient(null);
+  };
+
   const openForm = (client) => {
     setIsModalOpen(false);
     setIsFormOpen(true);
@@ -55,8 +65,6 @@ export default function Clients() {
   };
 
   const handleFormSubmit = (clientId, formData) => {
-    console.log('Formulário enviado para o cliente com ID:', clientId);
-    console.log('Dados do formulário:', formData);
     setIsFormOpen(false);
     setSelectedClient(null);
   };
@@ -126,7 +134,16 @@ export default function Clients() {
           contentLabel="Transaction Form"
         >
           {/* Renderize o componente do formulário e passe o cliente atual como propriedade */}
-          <TransactionForm clientId={selectedClient?._id} onSubmit={handleFormSubmit} />
+          <TransactionForm
+            clientId={selectedClient?._id}
+            onSubmit={handleFormSubmit}
+          />
+          <button
+            onClick={closeForm}
+            className="absolute top-0 right-0 hover:bg-red-500 rounded-bl-md text-white"
+          >
+            <FaTimes className="m-4 text-black" />
+          </button>
         </Modal>
       )}
 
@@ -136,12 +153,19 @@ export default function Clients() {
         onRequestClose={closeModal}
         contentLabel="Transactions Modal"
       >
-        {selectedClient !== null && selectedClient.transactions !== undefined ? (
+        {selectedClient !== null &&
+        selectedClient.transactions !== undefined ? (
           selectedClient.transactions.map((transaction, index) => (
-            <div key={index}>
+            <div
+              key={index}
+              className="border p-4 rounded hover:bg-blue-100 cursor-pointer"
+            >
               <h2>{transaction.description}</h2>
-              <h2>{transaction.date}</h2>
-              <h2>{transaction.amount}</h2>
+              <h2>
+                {format(new Date(transaction.date), "dd/MM/yyyy HH:mm:ss")}
+              </h2>
+
+              <h2>Amount: R${transaction.amount}</h2>
             </div>
           ))
         ) : (
@@ -149,8 +173,11 @@ export default function Clients() {
         )}
 
         {/* Botão para fechar o modal */}
-        <button onClick={closeModal} className="absolute top-0 right-0">
-          Close Modal
+        <button
+          onClick={closeModal}
+          className="absolute top-0 right-0  hover:bg-red-500 rounded-bl-md text-white"
+        >
+          <FaTimes className="m-4  text-black" />
         </button>
       </Modal>
     </div>
