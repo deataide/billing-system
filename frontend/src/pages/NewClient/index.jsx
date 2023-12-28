@@ -19,7 +19,7 @@ export default function CreateClient() {
 
   async function onFinish(data) {
     try {
-      const response = await apiWithToken.post("create-client", {
+         const response = await apiWithToken.post("create-client", {
         id: user,
         name: data.name,
         email: data.email,
@@ -30,6 +30,8 @@ export default function CreateClient() {
           city: data.city,
         },
       });
+
+      console.log(response)
 
       if (!response) {
         toast.error("Internal server error", {
@@ -55,9 +57,10 @@ export default function CreateClient() {
         theme: "colored",
       });
       setTimeout(() => {
-        navigate("../home", { replace: true });
+        navigate("../clients", { replace: true });
       }, 500);
     } catch (error) {
+      console.log(error)
       toast.error(error + " Don't forget to fill in all the fields", {
         position: "top-right",
         autoClose: 5000,
@@ -131,7 +134,7 @@ export default function CreateClient() {
                 DDD
               </label>
               <input
-                type="text"
+                type="number"
                 id="ddd"
                 name="ddd"
                 {...register("ddd")}
@@ -146,7 +149,7 @@ export default function CreateClient() {
                 Phone Number
               </label>
               <input
-                type="text"
+                type="number"
                 id="phoneNumber"
                 name="phoneNumber"
                 {...register("phoneNumber")}
@@ -180,7 +183,7 @@ export default function CreateClient() {
                 Home Number
               </label>
               <input
-                type="text"
+                type="number"
                 id="houseNumber"
                 name="houseNumber"
                 {...register("houseNumber")}

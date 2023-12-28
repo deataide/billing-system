@@ -3,8 +3,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-
 import { useAuth } from "../../context/AuthProvider/useAuth";
+import Image from '../../assets/login.svg'
 
 export default function Login() {
   let navigate = useNavigate();
@@ -77,7 +77,7 @@ export default function Login() {
               </div>
               <div className="mb-4">
                 <input
-                  type="text"
+                  type="password"
                   placeholder="Password"
                   name="password"
                   {...register("password")}
@@ -107,7 +107,9 @@ export default function Login() {
       </div>
 
       <div className="hidden lg:block relative w-0 flex-1 bg-blue-700">
-        <div className="h-full flex justify-center items-center"></div>
+        <div className="h-full flex justify-center items-center">
+        <img src={Image} width={700}/>
+        </div>
       </div>
       <ToastContainer
         position="top-right"

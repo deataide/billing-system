@@ -101,7 +101,7 @@ export default function Clients() {
         const response = await apiWithToken.get(`${user._id}/clients`);
         setClients(response.data.clients);
       } catch (error) {
-        toast.error(error + " Don't forget to fill in all the fields", {
+        toast.error("Internal Error", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -118,70 +118,42 @@ export default function Clients() {
 
   return (
     <div className="flex flex-col h-full w-full">
-      <div className="flex-col m-12 md:flex-row flex justify-between">
+      <div className="flex-col m-4 md:flex-row flex justify-between items-center">
         <h1 className="text-center p-2 text-4xl font-bold">Clients</h1>
 
         <Link to="/new-client">
-          <button className="bg-red-700 rounded text-white p-4">
+          <button className="bg-red-700 rounded text-white p-2 md:p-4 font-bold hover:bg-red-800">
             New client
           </button>
         </Link>
       </div>
 
-      <div className="flex flex-col justify-center mt-4">
+      <div className="flex flex-col mt-4">
         {currentClients.map((client, index) => (
           <div
             key={index}
-            className="m-2 p-4 border border-gray-300 rounded flex justify-between"
+            className="m-2 p-4 border border-gray-300 rounded flex flex-col md:flex-row justify-between items-center"
           >
-            {/* Renderize os detalhes do cliente aqui */}
-            <div className="flex flex-col font-bold">
-              <h3 className="text-red-700">Name: {client.name}</h3>
+            <div className="flex flex-col font-bold mb-2 md:mb-0">
+              <h3 className="text-red-700 capitalize">Name: {client.name}</h3>
               <p className="text-blue-700">E-mail: {client.email}</p>
               <p className="text-green-700">Balance: R${client.balance}</p>
             </div>
 
-            <div className="flex flex-col align-middle justify-between">
-              <button className="hover:bg-red-700 rounded-sm p-2">
-                <FaRegTrashAlt onClick={() => openModal(client)} />
+            <div className="flex gap-2">
+              <button
+                className="hover:bg-red-700 rounded-full p-2"
+                onClick={() => openModal(client)}
+              >
+                <FaRegTrashAlt />
               </button>
-              <button className="hover:bg-green-700 rounded-sm p-2">
-                <Link to={`/edit-client/${client._id}`}>
-                  <FaPen
-                    onClick={(client) => {
-                      console.log(client);
-                    }}
-                  />
-                </Link>
-              </button>
+
+              <Link to={`/edit-client/${client._id}`}>
+                <button className="hover:bg-green-700 rounded-full p-2">
+                  <FaPen />
+                </button>
+              </Link>
             </div>
-
-            {/* Modal para exibir transações */}
-            <Modal
-              style={modalStyles}
-              isOpen={isModalOpen}
-              onRequestClose={closeModal}
-              contentLabel="Transactions Modal"
-            >
-              <div className="flex flex-col items-center text-center">
-                <h1 className="text-2xl font-bold mb-4">Are you sure?</h1>
-                <div className="flex justify-center">
-                  <button
-                    className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
-                    onClick={() => deleteClient()}
-                  >
-                    Yes
-                  </button>
-
-                  <button
-                    className="bg-gray-300 text-black px-4 py-2 rounded-md"
-                    onClick={closeModal}
-                  >
-                    No
-                  </button>
-                </div>
-              </div>
-            </Modal>
           </div>
         ))}
       </div>
@@ -204,6 +176,32 @@ export default function Clients() {
           )
         )}
       </div>
+      <Modal
+        style={modalStyles}
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Transactions Modal"
+      >
+        <div className="flex flex-col items-center text-center">
+          <h1 className="text-2xl font-bold mb-4">Are you sure?</h1>
+          <div className="flex justify-center">
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
+              onClick={() => deleteClient()}
+            >
+              Yes
+            </button>
+
+            <button
+              className="bg-gray-300 text-black px-4 py-2 rounded-md"
+              onClick={closeModal}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </Modal>
+
       <ToastContainer
         position="top-right"
         autoClose={5000}

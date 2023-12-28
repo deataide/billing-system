@@ -1,9 +1,10 @@
 import React from "react";
-import { useState, useContext } from "react";
+import Image from '../../assets/forgot_password.svg'
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../context/AuthProvider/useAuth";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
   let navigate = useNavigate();
@@ -18,8 +19,31 @@ export default function Login() {
   async function onFinish(data) {
     try {
       await auth.changePassword(data.email);
+      toast.success("E-mail sended!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      navigate("../", { replace: true });
+
+
     } catch (error) {
-      console.log("error catch:" + error);
+      toast.error("Internal Error", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
     }
   }
 
@@ -27,7 +51,7 @@ export default function Login() {
     <div className="bg-neutral-100 flex min-h-screen">
       <div className="hidden lg:block relative w-0 flex-1 bg-blue-700">
         <div className="h-full flex justify-center items-center">
-
+        <img src={Image} width={700}/>
         </div>
       </div>
       <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-20">
@@ -65,6 +89,18 @@ export default function Login() {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
   );
 }

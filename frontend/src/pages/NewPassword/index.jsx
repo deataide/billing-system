@@ -1,13 +1,15 @@
 import React from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../context/AuthProvider/useAuth";
 import { useParams } from "react-router-dom";
+import Image from "../../assets/secure_login.svg";
 
 export default function Login() {
-  let navigate = useNavigate();
   const auth = useAuth();
-
+  let navigate = useNavigate();
   const { token } = useParams();
 
   const {
@@ -19,19 +21,51 @@ export default function Login() {
   async function onFinish(data) {
     try {
       if (data.password !== data.passwordConfirm) {
-        console.log("Senhas não conferem");
+        toast.error("The password and the confirm password has to be equal", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
 
       await auth.newPassword(data.password, token);
+      toast.error("Ok!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
+      navigate("../home", { replace: true });
     } catch (error) {
-      console.log("error catch:" + error);
+      toast.error(error + " Internal Error", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   }
 
   return (
     <div className="bg-neutral-100 flex min-h-screen">
       <div className="hidden lg:block relative w-0 flex-1 bg-blue-700">
-        <div className="h-full flex justify-center items-center"></div>
+        <div className="h-full flex justify-center items-center">
+          <img src={Image} width={700} />
+        </div>
       </div>
       <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm lg:w-96">
@@ -72,6 +106,18 @@ export default function Login() {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
   );
 }

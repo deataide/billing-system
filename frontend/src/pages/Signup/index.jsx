@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useContext } from "react";
+import Image from '../../assets/signup.svg'
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../context/AuthProvider/useAuth";
@@ -34,7 +34,9 @@ export default function Login() {
   return (
     <div className="bg-gray-50 flex min-h-screen">
       <div className="hidden lg:block relative w-0 flex-1 bg-blue-700">
-        <div className="h-full flex justify-center items-center"></div>
+        <div className="h-full flex justify-center items-center">
+        <img src={Image} width={700}/>
+        </div>
       </div>
       <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-20">
         <div className="mx-auto w-full max-w-sm lg:w-100">

@@ -94,7 +94,11 @@ export default function EditClient() {
         >
           <FaAngleLeft />
         </button>
-        <h1 className="text-center p-2 text-4xl font-bold">Edit Client</h1>
+        <div className="flex flex-col p-2">
+
+        <h1 className="text-4xl font-bold">Edit Client</h1>
+        <p className="text-blue-700 font-semibold">Edit just what you want to change</p>
+        </div>
       </div>
 
       <div className="mt-2">

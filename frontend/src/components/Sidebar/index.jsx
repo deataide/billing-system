@@ -73,16 +73,19 @@ function Sidebar() {
           ))}
         </ul>
 
-        <div
-          className="absolute bottom-0 left-0 bg-blue-900 rounded text-white 
-        font-bold text-1xl m-5 cursor-pointer"
-          onClick={exit}
-        >
-          <span className="flex">
-            <FaDoorClosed />
-            Exit
-          </span>
-        </div>
+        <div title="Exit"
+  className={`absolute ${
+    open ? "bottom-0" : "bottom-0"
+  } left-0 bg-blue-900 rounded text-white font-bold text-1xl m-5 cursor-pointer`}
+  onClick={exit}
+>
+  <button className="flex items-center bg-red-700 text-white rounded-md p-2 hover:bg-red-800 focus:outline-none focus:ring focus:border-blue-300 transition-all">
+    <FaDoorClosed className="text-xl mr-2" />
+    <span className={`${!open && "hidden"} text-sm origin-left duration-300`}>
+      Exit
+    </span>
+  </button>
+</div>
       </div>
     </div>
   );
